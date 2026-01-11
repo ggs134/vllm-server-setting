@@ -31,13 +31,9 @@ RUN /vllm-env/bin/pip install --upgrade pip setuptools wheel && \
     /vllm-env/bin/pip install torch==2.8.0+cu128 torchvision --index-url https://download.pytorch.org/whl/cu128 && \
     /vllm-env/bin/pip install nvidia-nccl-cu12==2.27.3
 
-# vLLM 설치 - 성공한 커밋으로 고정 (중요!)
-WORKDIR /
-RUN git clone https://github.com/vllm-project/vllm.git
-WORKDIR /vllm
-RUN MAX_JOBS=64 /vllm-env/bin/pip install -e .
-    
+# vLLM 안정 버전 설치 (PyPI - 빠르고 안정적)
+RUN /vllm-env/bin/pip install vllm==0.6.6.post1
 
-WORKDIR /vllm
+WORKDIR /workspace
 
 CMD ["bash"]
