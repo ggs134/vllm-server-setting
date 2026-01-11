@@ -35,8 +35,8 @@ RUN /vllm-env/bin/pip install --upgrade pip setuptools wheel && \
 WORKDIR /
 RUN git clone https://github.com/vllm-project/vllm.git
 WORKDIR /vllm
-RUN git checkout ba6f5f4 && \
-    MAX_JOBS=32 /vllm-env/bin/pip install -e .
+RUN MAX_JOBS=64 /vllm-env/bin/pip install -e .
+    
 
 WORKDIR /vllm
 
