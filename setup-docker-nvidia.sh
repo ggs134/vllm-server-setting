@@ -27,18 +27,6 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 # docker 그룹에 현재 사용자 추가
 sudo usermod -aG docker $USER
 
-# 로그아웃 안내 메시지 출력
-echo ""
-echo "설치가 완료되었습니다."
-echo "도커 그룹에 사용자가 추가되었습니다."
-echo "변경 사항을 적용하려면 로그아웃 후 재로그인하거나 시스템을 재부팅하세요."
-echo "SSH를 사용 중이라면 SSH 연결을 끊고 다시 접속하세요."
-echo ""
-
-echo "재접속 후 다음 명령어로 그룹 확인 가능:"
-echo "groups"
-echo ""
-
 # Add NVIDIA's GPG key and repository
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
 
@@ -58,3 +46,15 @@ sudo nvidia-ctk runtime configure --runtime=docker
 
 # Restart Docker
 sudo systemctl restart docker
+
+# 로그아웃 안내 메시지 출력
+echo ""
+echo "설치가 완료되었습니다."
+echo "도커 그룹에 사용자가 추가되었습니다."
+echo "변경 사항을 적용하려면 로그아웃 후 재로그인하거나 시스템을 재부팅하세요."
+echo "SSH를 사용 중이라면 SSH 연결을 끊고 다시 접속하세요."
+echo ""
+
+echo "재접속 후 다음 명령어로 그룹 확인 가능:"
+echo "groups"
+echo ""
