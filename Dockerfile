@@ -36,7 +36,7 @@ RUN pip install torch==2.8.0+cu128 torchvision --index-url https://download.pyto
 # 8. vLLM 클론 및 설치
 RUN git clone https://github.com/vllm-project/vllm.git
 WORKDIR /vllm
-RUN MAX_JOBS=64 pip install -e .
+RUN MAX_JOBS=32 pip install -e .
 
 # 작업 디렉토리
 WORKDIR /vllm
