@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.8.0-devel-ubuntu24.04
+FROM ubuntu:24.04
 
 # 빌드/설치에만 필요한 환경변수
 ENV DEBIAN_FRONTEND=noninteractive
@@ -12,6 +12,15 @@ RUN apt-get update && apt-get install -y \
     gcc make screen nano isc-dhcp-client \
     python3-venv python3-pip wget git curl \
     && rm -rf /var/lib/apt/lists/*
+
+# NVIDIA 저장소 및 CUDA Toolkit 설치
+RUN apt-get update && \
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb && \
+    dpkg -i cuda-keyring_1.1-1_all.deb && \
+    rm cuda-keyring_1.1-1_all.deb && \
+    apt-get update && \
+    apt-get install -y cuda-toolkit-12-8 && \
+    rm -rf /var/lib/apt/lists/*
 
 # Python 환경 설정
 RUN python3 -m venv /vllm-env
