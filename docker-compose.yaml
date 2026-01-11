@@ -26,9 +26,6 @@ services:
       - ~/.cache/huggingface:/root/.cache/huggingface
       - ~/.ssh:/root/.ssh:ro
     
-    env_file:
-      - .env
-    
     environment:
       - OMP_NUM_THREADS=${OMP_NUM_THREADS}
       - MKL_NUM_THREADS=${MKL_NUM_THREADS}
