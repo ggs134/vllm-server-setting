@@ -1,0 +1,63 @@
+services:
+  vllm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vllm-qwen:latest
+    container_name: vllm-qwen-server
+    
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+    ipc: host
+    shm_size: 20gb
+    
+    ports:
+      - "${VLLM_PORT}:${VLLM_PORT}"
+    
+    volumes:
+      - ~/workspace:/workspace
+      - ~/models:/models
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ~/.ssh:/root/.ssh:ro
+    
+    env_file:
+      - .env
+    
+    environment:
+      - OMP_NUM_THREADS=${OMP_NUM_THREADS}
+      - MKL_NUM_THREADS=${MKL_NUM_THREADS}
+      - OMP_PROC_BIND=${OMP_PROC_BIND}
+      - OMP_PLACES=${OMP_PLACES}
+      - VLLM_SLEEP_WHEN_IDLE=${VLLM_SLEEP_WHEN_IDLE}
+      - VLLM_TUNE_FUSED_MOE=${VLLM_TUNE_FUSED_MOE}
+      - CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}
+      - NCCL_DEBUG=${NCCL_DEBUG}
+      - NCCL_P2P_DISABLE=${NCCL_P2P_DISABLE}
+      - NCCL_IB_DISABLE=${NCCL_IB_DISABLE}
+    
+    command: >
+      bash -c "
+      source /vllm-env/bin/activate &&
+      cd /vllm &&
+      taskset -c ${TASKSET_CPUS} /vllm-env/bin/python3 /vllm-env/bin/vllm serve ${MODEL_NAME}
+        --tensor-parallel-size ${TENSOR_PARALLEL_SIZE}
+        --gpu-memory-utilization ${GPU_MEMORY_UTILIZATION}
+        --max-num-seqs ${MAX_NUM_SEQS}
+        --max-num-batched-tokens ${MAX_NUM_BATCHED_TOKENS}
+        --max-model-len ${MAX_MODEL_LEN}
+        --enable-prefix-caching
+        --enable-chunked-prefill
+        --async-scheduling
+        --enable-auto-tool-choice
+        --tool-call-parser hermes
+        --disable-log-stats
+        --port ${VLLM_PORT}
+      "
+    
+    restart: unless-stopped
