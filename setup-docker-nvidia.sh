@@ -21,6 +21,9 @@ EOF
 
 sudo apt update
 
+#install docker
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
 # docker 그룹에 현재 사용자 추가
 sudo usermod -aG docker $USER
 
