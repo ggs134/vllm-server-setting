@@ -194,16 +194,16 @@ NCCL_IB_DISABLE=1
 
 ```bash
 # 빌드 및 실행 (백그라운드)
-docker-compose up -d
+docker compose up -d
 
 # 로그 확인
-docker-compose logs -f
+docker compose logs -f
 
 # 컨테이너 내부에 접속
 docker exec -it vllm-qwen-server bash
 
 # 컨테이너 중지
-docker-compose down
+docker compose down
 ```
 
 ### 3. 서버 테스트
@@ -257,7 +257,7 @@ docker run -it \
 
 ```bash
 # Qwen 80B 모델을 위한 2GPU 환경 설정
-# 사용 방법: docker-compose --env-file config/.env.2gpu.qwen80b up -d
+# 사용 방법: docker compose --env-file config/.env.2gpu.qwen80b up -d
 
 # CPU 스레드 설정
 OMP_NUM_THREADS=32
@@ -294,7 +294,7 @@ TASKSET_CPUS=0-63
 
 **사용 방법:**
 ```bash
-docker-compose --env-file config/.env.2gpu.qwen80b up -d
+docker compose --env-file config/.env.2gpu.qwen80b up -d
 ```
 
 ### Qwen 235B 모델 (4GPU)
@@ -303,7 +303,7 @@ docker-compose --env-file config/.env.2gpu.qwen80b up -d
 
 ```bash
 # Qwen 235B 모델을 위한 4GPU 환경 설정
-# 사용 방법: docker-compose --env-file config/.env.4gpu.qwen235b up -d
+# 사용 방법: docker compose --env-file config/.env.4gpu.qwen235b up -d
 
 # CPU 스레드 설정
 OMP_NUM_THREADS=32
@@ -340,7 +340,7 @@ TASKSET_CPUS=0-63
 
 **사용 방법:**
 ```bash
-docker-compose --env-file config/.env.4gpu.qwen235b up -d
+docker compose --env-file config/.env.4gpu.qwen235b up -d
 ```
 
 ## 📚 참고 자료
