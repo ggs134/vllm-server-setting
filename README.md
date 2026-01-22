@@ -11,6 +11,7 @@
 - `config/`: 환경 변수 설정 파일 디렉토리
   - `.env.2gpu.qwen80b`: Qwen 80B 모델을 위한 2GPU 환경 설정 파일
   - `.env.4gpu.qwen235b`: Qwen 235B 모델을 위한 4GPU 환경 설정 파일
+  - `.env.4gpu.qwen480b.coder`: Qwen 480B Coder 모델을 위한 4GPU 환경 설정 파일
 
 ## 🛠️ 사전 요구 사항
 
@@ -341,6 +342,52 @@ TASKSET_CPUS=0-63
 **사용 방법:**
 ```bash
 docker compose --env-file config/.env.4gpu.qwen235b up -d
+```
+
+### Qwen 480B Coder 모델 (4GPU)
+
+`config/.env.4gpu.qwen480b.coder` 파일은 Qwen 480B Coder 모델을 4개의 GPU에서 실행하기 위한 최적의 설정을 포함합니다.
+
+```bash
+# Qwen 480B Coder 모델을 위한 4GPU 환경 설정
+# 사용 방법: docker compose --env-file config/.env.4gpu.qwen480b.coder up -d
+
+# CPU 스레드 설정
+OMP_NUM_THREADS=32
+MKL_NUM_THREADS=32
+OMP_PROC_BIND=true
+OMP_PLACES=cores
+
+# vLLM 설정
+VLLM_SLEEP_WHEN_IDLE=1
+VLLM_TUNE_FUSED_MOE=1
+
+# GPU 설정
+CUDA_VISIBLE_DEVICES=0,1,2,3
+
+# NCCL 설정
+NCCL_DEBUG=WARN
+NCCL_P2P_DISABLE=0
+NCCL_IB_DISABLE=1
+
+# 모델 설정
+MODEL_NAME=Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8
+TENSOR_PARALLEL_SIZE=4
+GPU_MEMORY_UTILIZATION=0.90
+MAX_NUM_SEQS=64
+MAX_NUM_BATCHED_TOKENS=98304
+MAX_MODEL_LEN=131072
+
+# 포트 설정
+VLLM_PORT=8000
+
+# CPU 코어 할당 (taskset)
+TASKSET_CPUS=0-63
+```
+
+**사용 방법:**
+```bash
+docker compose --env-file config/.env.4gpu.qwen480b.coder up -d
 ```
 
 ## 📚 참고 자료
